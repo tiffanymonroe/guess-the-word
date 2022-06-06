@@ -132,6 +132,7 @@ const countRemainingGuesses = function (guess) {
     remainingGuesses -= 1;
   } else {
     message.innerText = `Nice work! ${guess} is in the word.`
+    remainingGuesses += 1;
   }
   if (remainingGuesses === 0){
     remainingGuessesParagraph.innerHTML = `Sorry, you're out of guesses. The word is <span class="highlight">${word.toUpperCase()}</span>.`;
