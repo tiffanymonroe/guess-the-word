@@ -16,7 +16,7 @@ const message = document.querySelector(".message");
 const playAgainButton = document.querySelector(".play-again");
 
 let word = "magnolia";
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8;
 
 const getWord = async function (){
@@ -121,6 +121,8 @@ const checkForWin = function () {
   if (word.toUpperCase() === wordInProgress.innerText) {
     message.classList.add("win");
     message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;
+
+    startOver();
   }
 };
 
@@ -132,10 +134,39 @@ const countRemainingGuesses = function (guess) {
     message.innerText = `Nice work! ${guess} is in the word.`
   }
   if (remainingGuesses === 0){
-    remainingGuessesParagraph.innerText = `Sorry, you're out of guesses. The word is ${word.toUpperCase()}.`;
+    remainingGuessesParagraph.innerHTML = `Sorry, you're out of guesses. The word is <span class="highlight">${word.toUpperCase()}</span>.`;
+    playAgainButton.classList.remove("hide");
+    guessButton.classList.add("hide");
+    letter.value = "";
   } else if (remainingGuesses === 1){
     numOfGuesses.innerText = "1 guess ";
   } else {
     numOfGuesses.innerText = `${remainingGuesses} guesses `;
   }
 };
+
+const startOver = function () {
+  guessButton.classList.add("hide");
+  remainingGuessesParagraph.classList.add("hide");
+  guessedLettersList.classList.add("hide");
+  playAgainButton.classList.remove("hide");
+};
+
+playAgainButton.addEventListener("click", function () {
+  // reset values
+  message.classList.remove("win");
+  message.innerText = "";
+  guessedLettersList.innerText = "";
+  remainingGuesses = 8;
+  guessedLetters = [];
+  remainingGuessesParagraph.innerHTML = `You have <span>${remainingGuesses} guesses</span> remaining.`
+  letter.value = "";
+
+  getWord();
+
+  // show the right UI elements
+  guessButton.classList.remove("hide");
+  remainingGuessesParagraph.classList.remove("hide");
+  guessedLettersList.classList.remove("hide");
+  playAgainButton.classList.add("hide");
+});
